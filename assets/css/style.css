@@ -1,7 +1,7 @@
 body {
     height: 100vh;
     width: 100vw;
-    padding: 20px 10
+    padding: 20px 10;
 }
 
 main {
@@ -22,7 +22,6 @@ header {
     grid-column-start: span 2;
 }
 
-
 .sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -30,6 +29,7 @@ header {
     gap: 8px;
     grid-row-start: span 2;
 }
+
 hr {
     border-color: black;
     width: 100%;
@@ -45,4 +45,22 @@ hr {
     flex-direction: column;
     justify-content: space-evenly;
     padding-left: 8px;
+}
+
+.Five-Day-Forecast {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: max-content 1fr;
+    grid-column-gap: 20px;
+}
+
+.day-one, .day-two, .day-three, .day-four, .day-five {
+    border: none;
+    background-color: #33475b;
+    color: white;
+    border-radius: 2px;
+}
+
+.fiveDayTitle {
+    grid-column-start: span 5;
 }
