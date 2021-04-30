@@ -21,3 +21,28 @@ header {
     border-radius: 2px;
     grid-column-start: span 2;
 }
+
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    grid-row-start: span 2;
+}
+hr {
+    border-color: black;
+    width: 100%;
+    gap:8px;
+}
+
+.city-search-return {
+    border: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-left: 8px;
+}
