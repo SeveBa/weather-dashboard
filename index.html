@@ -13,7 +13,10 @@
     <header>Weather Dashboard</header>
     <div class="sidebar-nav"> 
       <h2>Search for a City:</h2>
-      <input type="text" placeholder="Search for a city" name="search"/>
+      <form id="city-name-form">
+         <input type="text" id="city-name-input">
+        <!-- <button type="submit">Submit form</button> -->
+      </form>
       <hr />
       <button type="button" class="btn btn-secondary">Austin</button>
       <button type="button" class="btn btn-secondary">Denver</button>
@@ -28,7 +31,7 @@
     
     
       <div class="city-search-return">
-        <h2>Atlanta (Date)</h2>
+        <h2 id="city-header">Atlanta (Date) </h2>
         <h5>Temp:</h5>
         <h5>Wind:</h5>
         <h5>Humidity:</h5>
