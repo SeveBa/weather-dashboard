@@ -3,17 +3,17 @@
 // var forecastUrl = "api.openweathermap.org/data/2.5/forecast?q=";
 // var long = "";
 // var lat = "";
-// var uvUrl =
-//   "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-//   lat +
-//   "&lon=" +
-//   long +
-//   apiKey;
+
+var uvUrl =
+  "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+  lat +
+  "&lon=" +
+  long +
+  apiKey;
 
 var form = document.querySelector("#city-name-form")
 var input = document.querySelector("#city-name-input")
 var h2 = document.querySelector("#city-header")
-var cityName = "Austin"
 var apiKey = "feae67b17a7db2b1dc50bc7b73015b2c"
 
 // Grab city name from input and create an event listener for the search button
@@ -43,8 +43,30 @@ function getCurrentWeather(){
 }
 
 function renderCurrentWeather(data){
-  console.log(data);
-  h2.textContent = data.name
+  var cityHeader = document.querySelector("#city-header")
+  var cityTemp = document.querySelector("#city-temp")
+  var cityWind = document.querySelector("#city-wind")
+  var cityHumidity = document.querySelector("#city-humidity")
+  var uvInfo = document.querySelector("#city-humidity")
+  cityTemp.textContent = "Temp: " + data.main.temp +"F";
+  cityWind.textContent = "Wind: " + data.wind.speed + " MPH";
+  cityHumidity.textContent = "Humidity: " + data.main.humidity + "%";
+  uvInfo.textContent = "UV Index: "
+  console.log(data)
+  cityHeader.textContent = data.name + " - " + moment().format("MMMM Do YYY, h:mm:ss a");
+  
+  fetch ( 'https://api.openweathermap.org/data/2.5/onecall?lat=' +
+  data.coord.lat +
+  "&lon=" +
+  data.coord.lon +
+  apiKey
+  )
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    // console.log(data) 
+  });
 } 
 
 form.addEventListener("submit", returnCityInfo);
