@@ -1,73 +1,103 @@
 // var currentUrl = api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial;
-// var apiKey = "&appid=feae67b17a7db2b1dc50bc7b73015b2c&units=imperial";
+// var apiKey = "1113d052c8b10c2850e5325a254b7ebe&units=imperial";
 // var forecastUrl = "api.openweathermap.org/data/2.5/forecast?q=";
 // var long = "";
 // var lat = "";
 
-var uvUrl =
-  "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-  lat +
-  "&lon=" +
-  long +
-  apiKey;
+// var uvUrl =
+//   "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+//   lat +
+//   "&lon=" +
+//   long +
+//   apiKey;
 
-var form = document.querySelector("#city-name-form")
-var input = document.querySelector("#city-name-input")
-var h2 = document.querySelector("#city-header")
-var apiKey = "feae67b17a7db2b1dc50bc7b73015b2c"
+var form = document.querySelector("#city-name-form");
+var input = document.querySelector("#city-name-input");
+var h2 = document.querySelector("#city-header");
+var apiKey = "1113d052c8b10c2850e5325a254b7ebe";
 
 // Grab city name from input and create an event listener for the search button
 
-function returnCityInfo(event){ 
-  event.preventDefault()
-cityName = input.value 
-console.log(cityName) 
-input.value = ""
+function returnCityInfo(event) {
+  event.preventDefault();
+  cityName = input.value;
+  console.log(cityName);
+  input.value = "";
 
-getCurrentWeather()
+  getCurrentWeather();
 }
 
-function getCurrentWeather(){ 
-  
+function getCurrentWeather() {
   // var currentUrl = `api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`
   )
-    .then(function(response) {
+    .then(function (response) {
       return response.json();
     })
-    .then(function(data) {
-      renderCurrentWeather(data)
-      
+    .then(function (data) {
+      renderCurrentWeather(data);
+      renderFiveDayForecast(data);
     });
 }
 
-function renderCurrentWeather(data){
-  var cityHeader = document.querySelector("#city-header")
-  var cityTemp = document.querySelector("#city-temp")
-  var cityWind = document.querySelector("#city-wind")
-  var cityHumidity = document.querySelector("#city-humidity")
-  var uvInfo = document.querySelector("#city-humidity")
-  cityTemp.textContent = "Temp: " + data.main.temp +"F";
+function renderCurrentWeather(data) {
+  var cityHeader = document.querySelector("#city-header");
+  var cityTemp = document.querySelector("#city-temp");
+  var cityWind = document.querySelector("#city-wind");
+  var cityHumidity = document.querySelector("#city-humidity");
+  var uvInfo = document.querySelector("#uvInfo");
+  
+  cityTemp.textContent = "Temp: " + data.main.temp + "F";
   cityWind.textContent = "Wind: " + data.wind.speed + " MPH";
   cityHumidity.textContent = "Humidity: " + data.main.humidity + "%";
-  uvInfo.textContent = "UV Index: "
-  console.log(data)
-  cityHeader.textContent = data.name + " - " + moment().format("MMMM Do YYY, h:mm:ss a");
-  
-  fetch ( 'https://api.openweathermap.org/data/2.5/onecall?lat=' +
-  data.coord.lat +
-  "&lon=" +
-  data.coord.lon +
-  apiKey
+  console.log(data);
+  cityHeader.textContent =
+    data.name + " - " + moment().format("MMMM Do YYYY");
+
+  fetch(
+    "https://api.openweathermap.org/data/2.5/uvi?lat=" +
+      data.coord.lat +
+      "&lon=" +
+      data.coord.lon +
+      "&appid=" + 
+      apiKey
   )
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    // console.log(data) 
-  });
-} 
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      uvInfo.textContent = "UV Index: " + data.value;
+    if (data.value < 2) {
+      uvInfo.classList.add("favorable");
+    } else if (data.value > 2 && data.value < 8) {
+      uvInfo.classList.add("moderate");
+    } else {
+      uvInfo.classList.add("severe");
+    }
+    });
+}
+
+function renderFiveDayForecast(data){
+fetch(
+  `https://api.openweathermap.org/data/2.5/forecast?q=${data.name}&appid=${apiKey}&units=imperial` 
+)
+.then(function (response) {
+  return response.json();
+})
+.then(function (data) {
+  for (let i = 1; i < 6; i ++){
+    let divId= $("div#" + i)
+    divId.children()[0].innerHTML = data.list[i * 8 - 1].dt_txt.split(" ")[0];
+    console.log("forecast", data)
+    divId.children()[1].setAttribute("src", `https://openweathermap.org/img/w/${data.list[i * 8 - 1].weather[0].icon}.png`); 
+    divId.children()[2].innerHTML = "Temp: " + data.list[i * 8 - 1].main.temp;
+    divId.children()[3].innerHTML = "Wind: " + data.list[i * 8 - 1].wind.speed + " MPH";
+    divId.children()[4].innerHTML = "Humidity: " + data.list[i * 8 - 1].main.humidity;
+  }
+  
+});
+}
 
 form.addEventListener("submit", returnCityInfo);
 
@@ -84,12 +114,3 @@ form.addEventListener("submit", returnCityInfo);
 // THEN I am again presented with current and future conditions for that city
 
 
-// fetch(
-//   `https://api.openweathermap.org/data/2.5/weather?q=Austin&appid=feae67b17a7db2b1dc50bc7b73015b2c&units=imperial`
-// )
-//   .then(function(response) {
-//     return response.json();
-//   })
-//   .then(function(data) {
-//     console.log(data);
-//   });
