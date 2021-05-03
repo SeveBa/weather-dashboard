@@ -4,12 +4,7 @@
 // var long = "";
 // var lat = "";
 
-// var uvUrl =
-//   "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-//   lat +
-//   "&lon=" +
-//   long +
-//   apiKey;
+
 
 var form = document.querySelector("#city-name-form");
 var input = document.querySelector("#city-name-input");
