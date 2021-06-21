@@ -7,7 +7,7 @@ The purpose of this application is to show you the current weather and 5-Day For
 * HTML
 * CSS
 * JS
-* Boostrap
+* Bootstrap
 * Moment
 * JQuery
 * Open Weather API
